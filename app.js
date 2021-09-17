@@ -51,6 +51,11 @@ const main = () => {
 
 
 const chooseType = action => {
+  if(action==='Modify'){
+    modifyProduct()
+  }else{
+
+ 
   prompt({
     type: 'list',
     name: 'type',
@@ -67,13 +72,13 @@ const chooseType = action => {
           addProduct(type)
           break
         case 'Modify':
-          // modifyProduct(Product)
+          modifyProduct()
           break
         case 'Remove':
           // removeProduct(Product)
           break
       }
-    })
+    })}
 }
 
 const viewProduct = (string) => {
@@ -109,28 +114,127 @@ const viewProduct = (string) => {
   }
 }
 
-const addProduct = (type)=>{
-  switch (string) {
+const addProduct = (type) => {
+  switch (type) {
     case 'Department table':
       prompt({
-        type:'input',
+        type: 'input',
         name: 'name',
         message: 'Enter the Department name',
+      }).then(({ name }) => {
+        const department = {
+          name: `${name}`
+        }
+        db.query('INSERT INTO department SET ?', department, err => {
+          if (err) { console.log(err) }
+          console.log('Department created!')
+          main()
+        })
+
 
       })
-      main()
+
       break
     case 'Role table':
-   
+      prompt([{
+        type: 'input',
+        name: 'title',
+        message: 'Enter the roles title'
+      },
+      {
+        type: 'input',
+        name: 'salary',
+        message: 'Enter the roles salary'
+      },
+      {
+        type: 'input',
+        name: 'department_id',
+        message: 'Enter the roles department id'
+      }
+      ]).then(({ title, salary, department_id }) => {
+        const role = {
+          title: `${title}`,
+          salary: `${salary}`,
+          department_id: `${department_id}`
+        }
+        db.query('INSERT INTO roles SET ?', role, err => {
+          if (err) { console.log(err) }
+          console.log('Role created!')
+          main()
+        })
 
-      main()
+
+      })
+
+
+
       break
     case 'Employee table':
-     
+      prompt([{
+        type: 'input',
+        name: 'first_name',
+        message: 'Enter their first name'
+      },
+      {
+        type: 'input',
+        name: 'last_name',
+        message: 'Enter their last name'
+      },
+      {
+        type: 'input',
+        name: 'role_id',
+        message: 'Enter their role id'
+      },
+      {
+        type: 'input',
+        name: 'manager_id',
+        message: 'Enter their managers id'
+      }
+      ]).then(({ first_name, last_name, role_id, manager_id }) => {
+        const employee = {
+          first_name: `${first_name}`,
+          last_name: `${last_name}`,
+          role_id: `${role_id}`,
+          manager_id: `${manager_id}`
+        }
+        db.query('INSERT INTO employee SET ?', employee, err => {
+          if (err) { console.log(err) }
+          console.log('Employee created!')
+          main()
+        })
 
-      main()
+
+      })
       break
   }
+
+
+}
+
+
+const modifyProduct = () => {
+  prompt([
+    {
+      type: 'number',
+      name: 'id',
+      message: "Enter the employee id you wish to update their role"
+
+    },
+    {
+      type: 'number',
+      name: 'role',
+      message: `Enter the new role id`,
+
+    }])
+    .then(({ id, role }) => {
+      const updates = { role_id: role }
+      const where = { id: id }
+
+      db.query('UPDATE employee SET ? WHERE ?', [updates, where], err => {
+        if (err) { console.log(err) }
+        console.log('user updated!')
+      })
+    })
 
 
 }
