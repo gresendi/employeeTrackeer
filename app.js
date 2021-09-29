@@ -86,7 +86,7 @@ const viewProduct = (string) => {
     case 'Department table':
       db.query('SELECT * FROM department', (err, departments) => {
         if (err) { console.log(err) }
-
+        console.log(' ')
         console.table(departments)
       })
 
@@ -96,7 +96,7 @@ const viewProduct = (string) => {
     case 'Role table':
       db.query('SELECT * FROM roles', (err, role) => {
         if (err) { console.log(err) }
-
+        console.log(' ')
         console.table(role)
       })
 
@@ -105,7 +105,7 @@ const viewProduct = (string) => {
     case 'Employee table':
       db.query('SELECT * FROM employee', (err, employee) => {
         if (err) { console.log(err) }
-
+        console.log(' ')
         console.table(employee)
       })
 
@@ -232,7 +232,8 @@ const modifyProduct = () => {
 
       db.query('UPDATE employee SET ? WHERE ?', [updates, where], err => {
         if (err) { console.log(err) }
-        console.log('user updated!')
+        console.log('Employee updated!')
+        main()
       })
     })
 
@@ -240,3 +241,4 @@ const modifyProduct = () => {
 }
 
 main()
+
